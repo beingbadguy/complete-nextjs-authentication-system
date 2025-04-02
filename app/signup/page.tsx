@@ -1,0 +1,68 @@
+"use client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
+
+export default function SignupPage() {
+  const router = useRouter();
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+
+  const signupHandler = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/api/signup", data);
+      console.log(response.data);
+      router.push("/profile");
+    } catch (error: any) {
+      console.log(error.response.data);
+    }
+  };
+  return (
+    <div className="flex items-center justify-center gap-4 min-h-screen flex-col bg-white text-black">
+      <h1 className="text-3xl font-bold">Signup Page</h1>
+      <p>Fill the form to register</p>
+
+      <form
+        className=" flex items-center justify-center gap-2 flex-col"
+        onSubmit={signupHandler}
+      >
+        <Input
+          type="text"
+          placeholder="Full name"
+          name="name"
+          value={data.name}
+          onChange={changeHandler}
+        />
+        <Input
+          type="email"
+          placeholder="Email"
+          name="email"
+          value={data.email}
+          onChange={changeHandler}
+        />
+        <Input
+          type="password"
+          placeholder="Password"
+          name="password"
+          value={data.password}
+          onChange={changeHandler}
+        />
+        <Button type="submit" className="bg-black text-white w-full">
+          Sign Up
+        </Button>
+        <Link href="/login">Already have an account? Login</Link>
+      </form>
+    </div>
+  );
+}
