@@ -3,7 +3,6 @@ import User from "@/models/user.model";
 import { databaseConnection } from "@/config/databseConnection";
 import { NextRequest, NextResponse } from "next/server";
 import { generateTokenAndSetCookie } from "@/lib/generateTokenAndSetCookie";
-import jwt from "jsonwebtoken";
 databaseConnection();
 
 export async function POST(request: NextRequest) {
@@ -58,14 +57,6 @@ export async function POST(request: NextRequest) {
         { status: 401 }
       );
     }
-
-    const token = await jwt.sign(
-      { userId: user._id },
-      process.env.JWT_SECRET!,
-      {
-        expiresIn: "1d",
-      }
-    );
 
     const response = NextResponse.json({
       success: true,

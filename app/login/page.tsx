@@ -1,15 +1,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Link from "next/link";
-import {
-  ChangeEvent,
-  FormEvent,
-  FormEventHandler,
-  InputHTMLAttributes,
-  useState,
-} from "react";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
@@ -29,8 +23,12 @@ export default function LoginPage() {
       const response = await axios.post("/api/login", data);
       console.log(response.data);
       router.push("/profile"); // Redirect to home page after successful login
-    } catch (error: any) {
-      console.log(error.response.data);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data);
+      } else {
+        console.error("An unknown error occurred:", error);
+      }
     }
   };
   return (
@@ -59,7 +57,7 @@ export default function LoginPage() {
         <Button type="submit" className="bg-black text-white w-full">
           Log In
         </Button>
-        <Link href="/signup">Don't have an account? Signup</Link>
+        <Link href="/signup">Dont have an account? Signup</Link>
       </form>
     </div>
   );

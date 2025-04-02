@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
@@ -24,8 +24,12 @@ export default function SignupPage() {
       const response = await axios.post("/api/signup", data);
       console.log(response.data);
       router.push("/profile");
-    } catch (error: any) {
-      console.log(error.response.data);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data);
+      } else {
+        console.error("An unknown error occurred:", error);
+      }
     }
   };
   return (
