@@ -5,8 +5,10 @@ import axios, { AxiosError } from "axios";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/store";
 
 export default function LoginPage() {
+  const { setUser } = useAuthStore();
   const router = useRouter();
   const [data, setData] = useState({
     email: "",
@@ -22,7 +24,8 @@ export default function LoginPage() {
     try {
       const response = await axios.post("/api/login", data);
       console.log(response.data);
-      router.push("/profile"); // Redirect to home page after successful login
+      setUser(response.data.data); // Update  user state with the returned user object
+      router.push("/"); // Redirect to home page after successful login
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         console.log(error.response?.data);
@@ -32,7 +35,7 @@ export default function LoginPage() {
     }
   };
   return (
-    <div className="flex items-center justify-center gap-4 min-h-screen flex-col bg-white text-black">
+    <div className="flex items-center justify-center gap-4 min-h-[70vh] flex-col bg-white text-black">
       <h1 className="text-3xl font-bold">Log In Page</h1>
       <p>Fill the form to Log In</p>
 
@@ -54,6 +57,7 @@ export default function LoginPage() {
           value={data.password}
           onChange={changeHandler}
         />
+        <Link href={"/forget"} className="w-full text-right">Forget Password</Link>
         <Button type="submit" className="bg-black text-white w-full">
           Log In
         </Button>

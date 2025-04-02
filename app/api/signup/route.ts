@@ -2,6 +2,7 @@ import User from "@/models/user.model";
 import { databaseConnection } from "@/config/databseConnection";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
+import { generateTokenAndSetCookie } from "@/lib/generateTokenAndSetCookie";
 databaseConnection();
 
 export async function POST(request: NextRequest) {
@@ -50,7 +51,7 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
         success: true,
         message: "User registered successfully",
@@ -60,6 +61,8 @@ export async function POST(request: NextRequest) {
         status: 200,
       }
     );
+    generateTokenAndSetCookie(newUser._id, response);
+    return response;
   } catch (error) {
     console.log(error);
     return;

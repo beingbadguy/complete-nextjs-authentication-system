@@ -1,12 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useAuthStore } from "@/store/store";
 import axios, { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 export default function SignupPage() {
+  const { setUser } = useAuthStore();
   const router = useRouter();
   const [data, setData] = useState({
     name: "",
@@ -23,7 +25,8 @@ export default function SignupPage() {
     try {
       const response = await axios.post("/api/signup", data);
       console.log(response.data);
-      router.push("/profile");
+      setUser(response.data.data);
+      router.push("/");
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         console.log(error.response?.data);
@@ -33,7 +36,7 @@ export default function SignupPage() {
     }
   };
   return (
-    <div className="flex items-center justify-center gap-4 min-h-screen flex-col bg-white text-black">
+    <div className="flex items-center justify-center gap-4 min-h-[70vh] flex-col bg-white text-black">
       <h1 className="text-3xl font-bold">Signup Page</h1>
       <p>Fill the form to register</p>
 

@@ -12,7 +12,7 @@ export const generateTokenAndSetCookie = async (
   response.cookies.set("nextToken", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     expires: new Date(Date.now() + 60 * 60 * 1000),
   });
 };
