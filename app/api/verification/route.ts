@@ -8,6 +8,7 @@ databaseConnection();
 export async function POST(request: NextRequest) {
   try {
     const { email } = await request.json();
+    console.log(email);
     if (!email) {
       return NextResponse.json(
         {

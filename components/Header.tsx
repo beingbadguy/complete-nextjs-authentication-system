@@ -21,7 +21,7 @@ const Header = () => {
   useEffect(() => {
     fetchUser(); // Fetch user when the component mounts
 
-    if (user && !user.isVerfied) {
+    if (user && !user.isVerified) {
       router.push("/verify");
     }
   }, [fetchUser]);

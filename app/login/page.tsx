@@ -31,7 +31,7 @@ export default function LoginPage() {
       const response = await axios.post("/api/login", data);
       // console.log(response.data);
       setUser(response.data.data); // Update  user state with the returned user object
-      if (response.data.data.isVerified) {
+      if (await response.data.data.isVerified) {
         router.push("/"); // Redirect to home page after successful login
       } else {
         router.push("/verify"); // Redirect to home page after successful login

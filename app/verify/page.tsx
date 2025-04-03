@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuthStore } from "@/store/store";
 import axios, { AxiosError } from "axios";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
@@ -21,12 +20,14 @@ export default function VerificationPage() {
   // console.log(user?.email);
 
   useEffect(() => {
-    if (user && user.isVerfied) {
-      redirect("/");
-    } else if (!user) {
-      redirect("/login");
+    if (user) {
+      if (user.isVerified) {
+        router.push("/");
+      }
+    } else {
+      router.push("/login");
     }
-  }, [user]);
+  }, [user, router]);
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
