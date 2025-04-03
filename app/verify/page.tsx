@@ -4,9 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuthStore } from "@/store/store";
 import axios, { AxiosError } from "axios";
-import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function VerificationPage() {
@@ -124,7 +123,7 @@ export default function VerificationPage() {
               "Resend Code"
             )}
           </Button>
-          <Button variant="link" onClick={logout}>
+          <Button  className="cursor-pointer" variant="link" onClick={logout}>
             Another email
           </Button>
         </div>
