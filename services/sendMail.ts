@@ -15,6 +15,7 @@ export const userVerifiedMail = (email: string) => {
 
 export const forgetPasswordMail = (email: string, token: string) => {
   const resetLink = `https://complete-nextjs-authentication-system.vercel.app/reset/${token}`;
+  console.log("I just send a mail");
 
   const template = `Click here to reset your password: ${resetLink}`;
   sendMail(email, "Master Authentication ⚡", "", template);

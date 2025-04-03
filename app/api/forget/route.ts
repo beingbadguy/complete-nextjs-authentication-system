@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     if (user.resetRequestCount >= 3) {
       return NextResponse.json(
-        { success: false, message: "You can only request 3 tokens per day" },
+        { success: false, message: "You can only request 3 times per day." },
         { status: 429 }
       );
     }
@@ -53,11 +53,11 @@ export async function POST(request: NextRequest) {
     await user.save();
 
     // Send reset email
-    await forgetPasswordMail(user.email, verificationToken);
+    forgetPasswordMail(user.email, verificationToken);
 
     return NextResponse.json({
       success: true,
-      message: "Reset token sent successfully",
+      message: "Reset link sent to your email.",
     });
   } catch (error) {
     console.error("Error in password reset request:", error);
