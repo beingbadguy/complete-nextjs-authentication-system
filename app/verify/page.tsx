@@ -18,16 +18,6 @@ export default function VerificationPage() {
 
   const { user, logout } = useAuthStore();
 
-  // console.log(user?.email);
-
-  useEffect(() => {
-    if (user && user.isVerfied) {
-      redirect("/");
-    } else if (!user) {
-      redirect("/login");
-    }
-  }, [user]);
-
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
 
