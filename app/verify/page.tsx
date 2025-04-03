@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuthStore } from "@/store/store";
 import axios, { AxiosError } from "axios";
+import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export default function VerificationPage() {
@@ -16,6 +17,16 @@ export default function VerificationPage() {
   const [error, setError] = useState("");
 
   const { user, logout } = useAuthStore();
+
+  // console.log(user?.email);
+
+  useEffect(() => {
+    if (user && user.isVerfied) {
+      redirect("/");
+    } else if (!user) {
+      redirect("/login");
+    }
+  }, [user]);
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -123,7 +134,7 @@ export default function VerificationPage() {
               "Resend Code"
             )}
           </Button>
-          <Button  className="cursor-pointer" variant="link" onClick={logout}>
+          <Button className="cursor-pointer" variant="link" onClick={logout}>
             Another email
           </Button>
         </div>
