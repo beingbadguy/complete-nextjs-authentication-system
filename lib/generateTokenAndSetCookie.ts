@@ -3,9 +3,10 @@ import { NextResponse } from "next/server";
 
 export const generateTokenAndSetCookie = async (
   userId: string,
+  isVerified: boolean,
   response: NextResponse
 ) => {
-  const token = jwt.sign({ userId }, process.env.JWT_SECRET!, {
+  const token = jwt.sign({ userId, isVerified }, process.env.JWT_SECRET!, {
     expiresIn: "1h",
   });
 

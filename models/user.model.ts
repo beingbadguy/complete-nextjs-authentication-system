@@ -9,6 +9,11 @@ const userSchema = new mongoose.Schema({
     enum: ["user", "admin"],
     default: "user",
   },
+  isVerified: {
+    type: Boolean,
+    default: false,
+    required: true,
+  },
   verificationToken: {
     type: String,
     default: null,

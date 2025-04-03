@@ -17,7 +17,6 @@ export async function GET(request: NextRequest) {
         { status: 401 }
       );
     }
-    console.log();
     const user = await User.findById(decodedToken.userId);
     if (!user) {
       return NextResponse.json(

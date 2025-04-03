@@ -3,6 +3,8 @@ import { databaseConnection } from "@/config/databseConnection";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import { generateTokenAndSetCookie } from "@/lib/generateTokenAndSetCookie";
+import { sendEmailVerificationMail } from "@/services/sendMail";
+import crypto from "crypto";
 databaseConnection();
 
 export async function POST(request: NextRequest) {
@@ -49,7 +51,18 @@ export async function POST(request: NextRequest) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ name, email, password: hashedPassword });
+
+    const verificationToken = crypto.randomInt(100000, 999999).toString();
+    const verificationTokenExpiry = Date.now() + 24 * 60 * 60 * 1000;
+
+    const newUser = new User({
+      name,
+      email,
+      password: hashedPassword,
+      verificationToken,
+      verificationTokenExpiry,
+      isVerified: false,
+    });
     await newUser.save();
     const response = NextResponse.json(
       {
@@ -61,10 +74,17 @@ export async function POST(request: NextRequest) {
         status: 200,
       }
     );
-    generateTokenAndSetCookie(newUser._id, response);
+    await sendEmailVerificationMail(newUser.email, verificationToken);
+    generateTokenAndSetCookie(newUser._id, newUser.isVerified, response);
     return response;
   } catch (error) {
     console.log(error);
-    return;
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Failed to register user",
+      },
+      { status: 401 }
+    );
   }
 }

@@ -3,7 +3,7 @@ import axios from "axios";
 
 // Define the shape of your authentication state
 interface AuthState {
-  user: { name: string; email: string } | null;
+  user: { name: string; email: string; isVerfied: boolean } | null;
   isLoggingOut: boolean;
   fetchUser: () => Promise<void>;
   logout: () => void;
@@ -33,8 +33,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ user: null });
     } catch (error) {
       console.error("Failed to logout", error);
-    }
-    finally {
+    } finally {
       set({ isLoggingOut: false });
     }
   },
