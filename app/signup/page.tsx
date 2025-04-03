@@ -99,7 +99,7 @@ export default function SignupPage() {
         <Button
           disabled={loading}
           type="submit"
-          className="bg-black text-white w-full"
+          className="bg-black text-white w-full cursor-pointer"
         >
           {loading ? (
             <AiOutlineLoading3Quarters className=" animate-spin text-white" />

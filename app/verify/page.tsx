@@ -46,8 +46,6 @@ export default function VerificationPage() {
       // console.log(response.data);
       setError(response.data.message);
 
-      //   redirect to the home page
-      // redirect("/profile");
       router.push("/");
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
@@ -71,7 +69,9 @@ export default function VerificationPage() {
     }
     setTokenLoading(true);
     try {
-      const response = await axios.post("/api/verification", user?.email);
+      const response = await axios.post("/api/verification", {
+        email: user?.email,
+      });
       // console.log(response.data);
       setError(response.data.message);
       //   redirect to the home page

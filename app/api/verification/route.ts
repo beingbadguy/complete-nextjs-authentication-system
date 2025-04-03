@@ -40,8 +40,12 @@ export async function POST(request: NextRequest) {
       },
       { status: 200 }
     );
-  } catch (error) {
-    console.log(error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.log(error.message);
+    } else {
+      console.log("An unknown error occurred", error);
+    }
     return NextResponse.json(
       {
         message: "An error occurred while sending verification token",
