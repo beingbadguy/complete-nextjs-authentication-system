@@ -25,6 +25,8 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
+  resetRequestCount: { type: Number, default: 0 },
+  lastResetRequest: { type: Date, default: null },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

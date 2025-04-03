@@ -7,10 +7,14 @@ interface DecodeType {
 
 export async function fetchTokenDetails(request: NextRequest) {
   try {
-    const token = request.cookies.get("nextToken")?.value || " ";
+    const token = request.cookies.get("nextToken")?.value;
+    if (!token) return null; // No token found
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodeType;
-    return decoded;
+
+    return decoded || null;
   } catch (error) {
     console.error("Failed to decode JWT token:", error);
+    return null; // Return null instead of a response
   }
 }

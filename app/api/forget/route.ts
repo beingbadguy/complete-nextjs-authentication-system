@@ -10,43 +10,59 @@ export async function POST(request: NextRequest) {
     const { email } = await request.json();
     if (!email) {
       return NextResponse.json(
-        {
-          success: false,
-          message: "Please provide an email",
-        },
-        { status: 404 }
+        { success: false, message: "Email is required" },
+        { status: 400 }
       );
     }
-    const userExists = await User.findOne({ email: email });
-    if (!userExists) {
+
+    const user = await User.findOne({ email });
+    if (!user) {
       return NextResponse.json(
-        {
-          success: true,
-          message: "Invalid credentials",
-        },
+        { success: false, message: "User not found" },
         { status: 404 }
       );
     }
+
+    // Rate Limiting Logic
+    const now = new Date();
+    const lastRequest = user.lastResetRequest
+      ? new Date(user.lastResetRequest)
+      : null;
+
+    if (lastRequest) {
+      const diffInHours =
+        (now.getTime() - lastRequest.getTime()) / (1000 * 60 * 60); // Convert ms to hours
+      if (diffInHours >= 24) {
+        user.resetRequestCount = 0; // Reset count if 24 hours have passed
+      }
+    }
+
+    if (user.resetRequestCount >= 3) {
+      return NextResponse.json(
+        { success: false, message: "You can only request 3 tokens per day" },
+        { status: 429 }
+      );
+    }
+
     const verificationToken = crypto.randomBytes(32).toString("hex");
     const verificationTokenExpiry = Date.now() + 60 * 60 * 24 * 1000;
-    userExists.forgetToken = verificationToken;
-    userExists.forgetTokenExpiry = verificationTokenExpiry;
-    await userExists.save();
-    await forgetPasswordMail(userExists.email, verificationToken);
-    return NextResponse.json(
-      {
-        success: true,
-        message: "Reset password link has been sent to your email",
-      },
-      { status: 200 }
-    );
+    user.forgetToken = verificationToken;
+    user.forgetTokenExpiry = verificationTokenExpiry;
+    user.lastResetRequest = now;
+    user.resetRequestCount += 1;
+    await user.save();
+
+    // Send reset email
+    await forgetPasswordMail(user.email, verificationToken);
+
+    return NextResponse.json({
+      success: true,
+      message: "Reset token sent successfully",
+    });
   } catch (error) {
-    console.log(error);
+    console.error("Error in password reset request:", error);
     return NextResponse.json(
-      {
-        success: false,
-        message: "Unable to process the request",
-      },
+      { success: false, message: "Something went wrong" },
       { status: 500 }
     );
   }

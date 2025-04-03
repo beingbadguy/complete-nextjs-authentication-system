@@ -24,16 +24,21 @@ export async function POST(request: NextRequest) {
     const user = await User.findOne({
       forgetToken: token,
     });
+    // console.log(user);
     if (!user) {
       return NextResponse.json(
-        { message: "Invalid or expired token", success: false },
+        {
+          message: "Invalid or expired token",
+          success: false,
+          data: user,
+        },
         { status: 400 }
       );
     }
 
     user.password = await bcrypt.hash(password, 10);
-    user.resetToken = null;
-    user.resetTokenExpiry = null;
+    user.forgetToken = null;
+    user.forgetTokenExpiry = null;
     await user.save();
 
     return NextResponse.json(

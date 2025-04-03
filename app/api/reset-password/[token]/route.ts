@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { databaseConnection } from "@/config/databseConnection";
 import User from "@/models/user.model";
 import bcrypt from "bcrypt";
+import { passwordResetSuccessMail } from "@/services/sendMail";
 databaseConnection();
 
 export async function POST(
@@ -34,9 +35,11 @@ export async function POST(
     }
 
     user.password = await bcrypt.hash(password, 10);
-    user.resetToken = undefined;
-    user.resetTokenExpiry = undefined;
+    user.forgetToken = null;
+    user.forgetTokenExpiry = null;
     await user.save();
+
+    passwordResetSuccessMail(user.email);
 
     return NextResponse.json(
       { message: "Password reset successful", success: true },
