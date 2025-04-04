@@ -9,6 +9,7 @@ import { IoMdClose } from "react-icons/io";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { FaUser } from "react-icons/fa";
+import { MdDashboard } from "react-icons/md";
 
 const Header = () => {
   const { user, fetchUser } = useAuthStore();
@@ -82,13 +83,24 @@ const Header = () => {
 
         <div className="flex items-center justify-center gap-2">
           {user ? (
-            <Link href={"/profile"}>
-              <p className=" flex items-center justify-center cursor-pointer">
-                {" "}
-                <FaUser className="size-5" />
-                {/* {user.name.charAt(0).toUpperCase()} */}
-              </p>
-            </Link>
+            <div className="flex items-center justify-center gap-1">
+              <Link href={"/profile"}>
+                <p className=" flex items-center justify-center cursor-pointer">
+                  {" "}
+                  <FaUser className="size-5" />
+                </p>
+              </Link>
+              {user && user?.role == "admin" ? (
+                <Link href={"/admin"}>
+                  <p className=" flex items-center justify-center cursor-pointer">
+                    {" "}
+                    <MdDashboard className="size-6" />
+                  </p>
+                </Link>
+              ) : (
+                ""
+              )}
+            </div>
           ) : unablepath.includes(pathname) ? (
             ""
           ) : (

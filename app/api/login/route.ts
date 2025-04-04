@@ -5,9 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { generateTokenAndSetCookie } from "@/lib/generateTokenAndSetCookie";
 import { sendEmailVerificationMail } from "@/services/sendMail";
 import crypto from "crypto";
-databaseConnection();
 
 export async function POST(request: NextRequest) {
+  databaseConnection();
   try {
     const { email, password } = await request.json();
     if (!email || !password) {
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
     });
 
     user.passsword = undefined;
-    generateTokenAndSetCookie(user._id, user.isVerified, response);
+    generateTokenAndSetCookie(user._id, user.isVerified, user.role, response);
     return response;
   } catch (error) {
     console.log(error);

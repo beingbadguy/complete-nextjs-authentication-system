@@ -28,6 +28,7 @@ export async function middleware(request: NextRequest) {
 
   // Protected routes (only accessible if logged in)
   const protectedRoutes = ["/profile"];
+  const onlyAdminRoutes = ["/admin"];
 
   if (!token) {
     // If no token, restrict access to protected routes
@@ -39,6 +40,7 @@ export async function middleware(request: NextRequest) {
 
   // Verify JWT with `jose`
   const decoded = await verifyJWT(token);
+  console.log(decoded?.role);
 
   if (!decoded) {
     // If JWT is invalid or expired, clear cookie and redirect to login
@@ -50,6 +52,9 @@ export async function middleware(request: NextRequest) {
   // Redirect unverified users to verification page
   if (!decoded.isVerified && path !== "/verify") {
     return NextResponse.redirect(new URL("/verify", request.url));
+  }
+  if (onlyAdminRoutes.includes(path) && decoded.role !== "admin") {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   // Redirect already logged-in users away from auth pages
@@ -72,5 +77,6 @@ export const config = {
     "/forget",
     "/reset",
     "/verify",
+    "/admin",
   ],
 };

@@ -5,9 +5,9 @@ import bcrypt from "bcrypt";
 import { generateTokenAndSetCookie } from "@/lib/generateTokenAndSetCookie";
 import { sendEmailVerificationMail } from "@/services/sendMail";
 import crypto from "crypto";
-databaseConnection();
 
 export async function POST(request: NextRequest) {
+  databaseConnection();
   try {
     const { name, email, password } = await request.json();
     if (!name || !email || !password) {
@@ -75,7 +75,12 @@ export async function POST(request: NextRequest) {
       }
     );
     await sendEmailVerificationMail(newUser.email, verificationToken);
-    generateTokenAndSetCookie(newUser._id, newUser.isVerified, response);
+    generateTokenAndSetCookie(
+      newUser._id,
+      newUser.isVerified,
+      newUser.role,
+      response
+    );
     return response;
   } catch (error) {
     console.log(error);

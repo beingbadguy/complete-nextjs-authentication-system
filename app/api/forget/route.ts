@@ -3,9 +3,9 @@ import { databaseConnection } from "@/config/databseConnection";
 import User from "@/models/user.model";
 import crypto from "crypto";
 import { forgetPasswordMail } from "@/services/sendMail";
-databaseConnection();
 
 export async function POST(request: NextRequest) {
+  databaseConnection();
   try {
     const { email } = await request.json();
     if (!email) {

@@ -3,7 +3,12 @@ import axios from "axios";
 
 // Define the shape of your authentication state
 interface AuthState {
-  user: { name: string; email: string; isVerified: boolean } | null;
+  user: {
+    name: string;
+    email: string;
+    isVerified: boolean;
+    role: string;
+  } | null;
   isLoggingOut: boolean;
   fetchUser: () => Promise<void>;
   logout: () => void;

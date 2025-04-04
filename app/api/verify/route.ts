@@ -3,9 +3,9 @@ import { databaseConnection } from "@/config/databseConnection";
 import User from "@/models/user.model";
 import { userVerifiedMail } from "@/services/sendMail";
 import { generateTokenAndSetCookie } from "@/lib/generateTokenAndSetCookie";
-databaseConnection();
 
 export async function POST(request: NextRequest) {
+  databaseConnection();
   try {
     const { token } = await request.json();
     // console.log(await request.json());
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
 
-    generateTokenAndSetCookie(user._id, user.isVerified, response);
+    generateTokenAndSetCookie(user._id, user.isVerified, user.role, response);
 
     return response;
   } catch (error) {

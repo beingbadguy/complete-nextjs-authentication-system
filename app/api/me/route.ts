@@ -3,9 +3,9 @@ import { fetchTokenDetails } from "@/lib/fetchTokenDetails";
 import User from "@/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 
-databaseConnection();
 
 export async function GET(request: NextRequest) {
+  databaseConnection();
   try {
     const decodedToken = await fetchTokenDetails(request);
     if (!decodedToken) {
