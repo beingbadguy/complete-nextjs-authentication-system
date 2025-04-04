@@ -107,7 +107,7 @@ export default function LoginPage() {
           )}
         </Button>
         {loginError && (
-          <div className="text-red-500 font-light">{loginError}</div>
+          <div className="text-red-500 font-light text-sm">{loginError}</div>
         )}
         <Link href="/signup">Dont have an account? Signup</Link>
       </form>

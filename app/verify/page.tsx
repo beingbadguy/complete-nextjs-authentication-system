@@ -104,7 +104,7 @@ export default function VerificationPage() {
           onChange={(e) => setToken(e.target.value)}
           className="border-gray-400"
         />
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-red-500 text-sm">{error}</p>}
         <div className="w-full flex items-center justify-between my-2">
           <Button
             disabled={loading}

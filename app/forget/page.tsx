@@ -48,7 +48,7 @@ export default function ForgetPage() {
           setUserEmail(e.target.value);
         }}
       />
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="text-red-500 text-sm">{error}</p>}
       <Button
         disabled={loading}
         className="bg-black text-white cursor-pointer"

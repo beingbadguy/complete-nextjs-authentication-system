@@ -108,7 +108,7 @@ export default function SignupPage() {
           )}
         </Button>
         {signupError && (
-          <div className="text-red-500 font-light">{signupError}</div>
+          <div className="text-red-500 font-light text-sm">{signupError}</div>
         )}
         <Link href="/login">Already have an account? Login</Link>
       </form>
