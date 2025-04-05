@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     user.verificationTokenExpiry = Date.now() + 24 * 60 * 60 * 1000;
     await user.save();
 
-    await sendEmailVerificationMail(user.email, verificationToken);
+     sendEmailVerificationMail(user.email, verificationToken);
     return NextResponse.json(
       {
         message: "Verification email sent successfully",

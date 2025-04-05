@@ -39,7 +39,7 @@ export async function POST(
     user.forgetTokenExpiry = null;
     await user.save();
 
-    await passwordResetSuccessMail(user.email);
+     passwordResetSuccessMail(user.email);
 
     return NextResponse.json(
       { message: "Password reset successful", success: true },

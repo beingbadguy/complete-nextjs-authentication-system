@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
         status: 200,
       }
     );
-    await sendEmailVerificationMail(newUser.email, verificationToken);
+     sendEmailVerificationMail(newUser.email, verificationToken);
     generateTokenAndSetCookie(
       newUser._id,
       newUser.isVerified,
