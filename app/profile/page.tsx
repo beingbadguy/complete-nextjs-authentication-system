@@ -21,7 +21,8 @@ export default function ProfilePage() {
       <div>
         <h1>Profile Page</h1>
         <p>
-          Welcome, <span className="font-bold">{user?.name}</span>
+          Welcome,
+          <span className="font-bold ml-1">{user?.name}❤️</span>
         </p>
       </div>
       <Button

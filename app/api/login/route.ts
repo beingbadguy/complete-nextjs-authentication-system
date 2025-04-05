@@ -65,8 +65,15 @@ export async function POST(request: NextRequest) {
       user.verificationTokenExpiry = Date.now() + 24 * 60 * 60 * 1000;
       await user.save();
 
-       sendEmailVerificationMail(user.email, verificationToken);
+      sendEmailVerificationMail(user.email, verificationToken);
     }
+    user.password = undefined;
+    user.verificationToken = undefined;
+    user.verificationTokenExpiry = undefined;
+    user.forgetToken = undefined;
+    user.forgetTokenExpiry = undefined;
+    user.resetRequestCount = undefined;
+    user.lastResetRequest = undefined;
 
     const response = NextResponse.json({
       success: true,
@@ -74,7 +81,6 @@ export async function POST(request: NextRequest) {
       data: user,
     });
 
-    user.passsword = undefined;
     generateTokenAndSetCookie(user._id, user.isVerified, user.role, response);
     return response;
   } catch (error) {

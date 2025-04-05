@@ -3,7 +3,6 @@ import { fetchTokenDetails } from "@/lib/fetchTokenDetails";
 import User from "@/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 
-
 export async function GET(request: NextRequest) {
   databaseConnection();
   try {
@@ -27,6 +26,13 @@ export async function GET(request: NextRequest) {
         { status: 404 }
       );
     }
+    user.password = undefined;
+    user.verificationToken = undefined;
+    user.verificationTokenExpiry = undefined;
+    user.forgetToken = undefined;
+    user.forgetTokenExpiry = undefined;
+    user.resetRequestCount = undefined;
+    user.lastResetRequest = undefined;
     return NextResponse.json({
       success: true,
       user,

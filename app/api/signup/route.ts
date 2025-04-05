@@ -64,6 +64,15 @@ export async function POST(request: NextRequest) {
       isVerified: false,
     });
     await newUser.save();
+
+    newUser.password = undefined;
+    newUser.verificationToken = undefined;
+    newUser.verificationTokenExpiry = undefined;
+    newUser.forgetToken = undefined;
+    newUser.forgetTokenExpiry = undefined;
+    newUser.resetRequestCount = undefined;
+    newUser.lastResetRequest = undefined;
+
     const response = NextResponse.json(
       {
         success: true,
@@ -74,7 +83,7 @@ export async function POST(request: NextRequest) {
         status: 200,
       }
     );
-     sendEmailVerificationMail(newUser.email, verificationToken);
+    sendEmailVerificationMail(newUser.email, verificationToken);
     generateTokenAndSetCookie(
       newUser._id,
       newUser.isVerified,
