@@ -53,11 +53,11 @@ export async function POST(request: NextRequest) {
     await user.save();
 
     // Send reset email
-     forgetPasswordMail(user.email, verificationToken);
+    forgetPasswordMail(user.email, verificationToken);
 
     return NextResponse.json({
       success: true,
-      message: "Reset link sent to your email.",
+      message: "Reset link sent to your email (check spam folder) .",
     });
   } catch (error) {
     console.error("Error in password reset request:", error);
