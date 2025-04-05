@@ -1,6 +1,6 @@
 import sendMail from "./mailer";
 
-export const sendEmailVerificationMail = (
+export const sendEmailVerificationMail = async (
   email: string,
   verificationToken: string
 ) => {
@@ -8,12 +8,12 @@ export const sendEmailVerificationMail = (
   sendMail(email, "Master Authentication ⚡", ``, template);
 };
 
-export const userVerifiedMail = (email: string) => {
+export const userVerifiedMail = async (email: string) => {
   const template = "Your email has been verified!";
   sendMail(email, "Master Authentication ⚡", ``, template);
 };
 
-export const forgetPasswordMail = (email: string, token: string) => {
+export const forgetPasswordMail = async (email: string, token: string) => {
   const resetLink = `https://complete-nextjs-authentication-system.vercel.app/reset/${token}`;
   console.log("I just send a mail");
 
@@ -21,7 +21,7 @@ export const forgetPasswordMail = (email: string, token: string) => {
   sendMail(email, "Master Authentication ⚡", "", template);
 };
 
-export const passwordResetSuccessMail = (email: string) => {
+export const passwordResetSuccessMail = async (email: string) => {
   const template = "Your password has been reset successfully!";
   sendMail(email, "Master Authentication ⚡", "", template);
 };

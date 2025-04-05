@@ -28,7 +28,10 @@ export default function ProfilePage() {
       <Button
         className="cursor-pointer"
         disabled={isLoggingOut}
-        onClick={logout}
+        onClick={() => {
+          logout();
+          router.push("/login");
+        }}
       >
         {isLoggingOut ? (
           <AiOutlineLoading3Quarters className=" animate-spin text-white" />

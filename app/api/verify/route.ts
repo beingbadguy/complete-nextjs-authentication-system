@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     user.verificationTokenExpiry = null;
     await user.save();
 
-    userVerifiedMail(user.email);
+    await userVerifiedMail(user.email);
     const response = NextResponse.json(
       {
         message: "User verified successfully",
