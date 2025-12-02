@@ -20,11 +20,8 @@ const Header = () => {
   const router = useRouter();
 
   useEffect(() => {
-    fetchUser(); // Fetch user when the component mounts
-
-    if (user && !user.isVerified) {
-      router.push("/verify");
-    }
+    // Fetch user when the component mounts; do not force redirect to verification.
+    fetchUser();
   }, [fetchUser]);
 
   return (

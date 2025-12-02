@@ -3,8 +3,7 @@ import User from "@/models/user.model";
 import { databaseConnection } from "@/config/databseConnection";
 import { NextRequest, NextResponse } from "next/server";
 import { generateTokenAndSetCookie } from "@/lib/generateTokenAndSetCookie";
-import { sendEmailVerificationMail } from "@/services/sendMail";
-import crypto from "crypto";
+// We no longer send verification token on login automatically.
 
 export async function POST(request: NextRequest) {
   databaseConnection();
@@ -59,14 +58,10 @@ export async function POST(request: NextRequest) {
         { status: 401 }
       );
     }
-    if (!user.isVerified) {
-      const verificationToken = crypto.randomInt(100000, 999999).toString();
-      user.verificationToken = verificationToken;
-      user.verificationTokenExpiry = Date.now() + 24 * 60 * 60 * 1000;
-      await user.save();
-
-     await sendEmailVerificationMail(user.email, verificationToken);
-    }
+    // Previously the API generated and emailed a verification token on login
+    // if the user was not verified. We no longer do this to avoid forcing
+    // verification actions on login; verification can be requested manually
+    // via the /api/verification route.
     user.password = undefined;
     user.verificationToken = undefined;
     user.verificationTokenExpiry = undefined;

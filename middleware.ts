@@ -49,10 +49,11 @@ export async function middleware(request: NextRequest) {
     return response;
   }
 
-  // Redirect unverified users to verification page
-  if (!decoded.isVerified && path !== "/verify") {
-    return NextResponse.redirect(new URL("/verify", request.url));
-  }
+  // Previously we redirected unverified users to the verification page.
+  // That behavior is removed so users can navigate the site even if not verified.
+  // If you'd like to protect certain routes from unverified users, add them
+  // to an array and redirect as needed (e.g. profile). For now, we allow
+  // all verified and unverified users to proceed.
   if (onlyAdminRoutes.includes(path) && decoded.role !== "admin") {
     return NextResponse.redirect(new URL("/", request.url));
   }

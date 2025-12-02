@@ -31,11 +31,8 @@ export default function LoginPage() {
       const response = await axios.post("/api/login", data);
       // console.log(response.data);
       setUser(response.data.data); // Update  user state with the returned user object
-      if (await response.data.data.isVerified) {
-        router.push("/"); // Redirect to home page after successful login
-      } else {
-        router.push("/verify"); // Redirect to home page after successful login
-      }
+      // Redirect to home after successful login regardless of verification
+      router.push("/");
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         console.log(error.response?.data);
